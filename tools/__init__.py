@@ -1,4 +1,5 @@
 from .distance import residue_interaction_by_distance, residue_by_id
+from .AminoAcids import AminoAcids3
 
 ### Create pseudonyms for function
 
