@@ -1,7 +1,7 @@
 import numpy as np
 from Bio import PDB
 
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Self
 from dataclasses import dataclass
 
 import json
@@ -22,6 +22,15 @@ class InteractingResidue:
   id: str
 
   interactions: List[Interaction]
+
+  @classmethod
+  def from_json(cls, instance: Dict) -> Self:
+      
+      interactions = [Interaction(**i) for i in instance['interactions']]
+
+      del instance['interactions']
+      
+      return cls(**instance, interactions=interactions)
 
   def to_json(self) -> str:
 
