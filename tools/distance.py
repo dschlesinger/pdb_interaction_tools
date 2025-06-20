@@ -4,6 +4,8 @@ from Bio import PDB
 from typing import List, Dict, Tuple
 from dataclasses import dataclass
 
+import json
+
 @dataclass
 class Interaction:
 
@@ -20,6 +22,15 @@ class InteractingResidue:
   id: str
 
   interactions: List[Interaction]
+
+  def to_json(self) -> str:
+
+    base_json = self.__dict__
+
+    # __dict__ interactions
+    base_json['interactions'] = [i.__dict__ for i in base_json['interactions']]
+
+    return base_json
 
 def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: float = 6.0) -> List[InteractingResidue]:
     """Returns a list of all residues with at least one interaction under the distance limit
@@ -65,8 +76,8 @@ def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, dist
       b_key = ':'.join((b.id, str(pos[1])))
 
       # Create Interaction objects
-      a_interaction = Interaction(id=a_key, distance=euc_dist)
-      b_interaction = Interaction(id=b_key, distance=euc_dist)
+      a_interaction = Interaction(id=a_key, distance=float(euc_dist))
+      b_interaction = Interaction(id=b_key, distance=float(euc_dist))
 
       # Add to chain a
       if a_key in interacting_residues:
