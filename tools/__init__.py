@@ -1,4 +1,4 @@
-from .distance import residue_interaction_by_distance
+from .distance import residue_interaction_by_distance, residue_by_id
 
 ### Create pseudonyms for function
 

@@ -1,7 +1,7 @@
 import numpy as np
 from Bio import PDB
 
-from typing import List, Dict, Tuple, Self
+from typing import List, Dict, Tuple
 from dataclasses import dataclass
 
 import json
@@ -18,13 +18,16 @@ class InteractingResidue:
   chain: str
   position: int # in chain
 
+  # For later analysis, in 3 letter format
+  residue: str
+
   # to keep track of interactions
   id: str
 
   interactions: List[Interaction]
 
   @classmethod
-  def from_json(cls, instance: Dict) -> Self:
+  def from_json(cls, instance: Dict):
       
       interactions = [Interaction(**i) for i in instance['interactions']]
 
@@ -40,6 +43,16 @@ class InteractingResidue:
     base_json['interactions'] = [i.__dict__ for i in base_json['interactions']]
 
     return base_json
+
+def residue_by_id(interacting_residue: List[InteractingResidue], id: str) -> InteractingResidue | None:
+    """Returns None if not found"""
+
+    for ir in interacting_residue:
+
+        if ir.id == id:
+
+            return ir
+
 
 def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: float = 6.0) -> List[InteractingResidue]:
     """Returns a list of all residues with at least one interaction under the distance limit
@@ -78,7 +91,10 @@ def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, dist
     for idx, euc_dist in zip(np.argwhere(mask), below_cutoff):
 
       # Correct idx to residue position in parent
-      pos = (a_ca[idx[0]].get_parent().get_id()[1], b_ca[idx[1]].get_parent().get_id()[1])
+      a_residue = a_ca[idx[0]].get_parent()
+      b_residue = b_ca[idx[1]].get_parent()
+
+      pos = (a_residue.get_id()[1], b_residue.get_id()[1])
 
       # Keys for dictionary
       a_key = ':'.join((a.id, str(pos[0])))
@@ -95,6 +111,7 @@ def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, dist
           interacting_residues[a_key] = InteractingResidue(
               chain=a.id,
               position=pos[0],
+              residue=a_residue.get_resname(),
               id=a_key,
               interactions=[b_interaction]
           )
@@ -106,6 +123,7 @@ def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, dist
           interacting_residues[b_key] = InteractingResidue(
               chain=b.id,
               position=pos[1],
+              residue=b_residue.get_resname(),
               id=b_key,
               interactions=[a_interaction]
           )
