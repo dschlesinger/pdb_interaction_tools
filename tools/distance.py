@@ -21,7 +21,7 @@ class InteractingResidue:
 
   interactions: List[Interaction]
 
-def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: float) -> List[InteractingResidue]:
+def residue_interaction_by_distance(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: float = 6.0) -> List[InteractingResidue]:
     """Returns a list of all residues with at least one interaction under the distance limit
 
     Args:
