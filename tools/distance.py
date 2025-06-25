@@ -22,9 +22,10 @@ class Interaction:
 
   id: str
   global_distance: float
+  hash: int
 
   # If using by closest atomic interaction
-  closest_atomic_diffence: float | None = None
+  closest_atomic_diffrence: float | None = None
   self_closest: AtomicID | None = None
   other_closest: AtomicID | None = None
 
@@ -98,7 +99,7 @@ def Bio_object_by_residue(a: PDB.Chain.Chain, r: InteractingResidue) -> Any: # i
 
             return res
 
-def residue_closest_atomic_interaction(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: float = 6.0) -> List[InteractingResidue]:
+def residue_closest_atomic_interaction(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: float = 6.0, atomic_distance: float | None = None) -> List[InteractingResidue]:
 
     by_CA_distance: List[InteractingResidue] = residue_interaction_by_ca(a, b, distance)
 
@@ -136,7 +137,7 @@ def residue_closest_atomic_interaction(a: PDB.Chain.Chain, b: PDB.Chain.Chain, d
             # Get coords from flat index
             closest_atoms = np.unravel_index(closest_atoms, distance_mat.shape)
 
-            interaction.closest_atomic_diffence = distance_mat[closest_atoms].item()
+            interaction.closest_atomic_diffrence = distance_mat[closest_atoms].item()
 
             self_atom = list(self_Bio_object.get_atoms())[closest_atoms[0].item()]
             other_atom = list(other_Bio_object.get_atoms())[closest_atoms[1].item()]
@@ -156,9 +157,16 @@ def residue_closest_atomic_interaction(a: PDB.Chain.Chain, b: PDB.Chain.Chain, d
                 atom_number=closest_atoms[1].item(),
                 atom_type=other_atom.element,
             )
-    
-    # bc why not
-    by_atomic_diffrence = by_CA_distance
+
+    # Filter by closest interaction
+    if atomic_distance:
+
+        by_atomic_diffrence = [r for r in by_CA_distance if any(map(lambda i: i.closest_atomic_diffrence < atomic_distance, r.interactions))]
+
+    else:
+
+        by_atomic_diffrence = by_CA_distance
+
 
     return by_atomic_diffrence
 
@@ -209,9 +217,11 @@ def residue_interaction_by_ca(a: PDB.Chain.Chain, b: PDB.Chain.Chain, distance: 
       a_key = ':'.join((a.id, str(pos[0])))
       b_key = ':'.join((b.id, str(pos[1])))
 
+      hash_: int = hash('|'.join(sorted([a_key, b_key])))
+
       # Create Interaction objects
-      a_interaction = Interaction(id=a_key, global_distance=float(euc_dist))
-      b_interaction = Interaction(id=b_key, global_distance=float(euc_dist))
+      a_interaction = Interaction(id=a_key, hash=hash_, global_distance=float(euc_dist))
+      b_interaction = Interaction(id=b_key, hash=hash_, global_distance=float(euc_dist))
 
       # Add to chain a
       if a_key in interacting_residues:
