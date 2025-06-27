@@ -5,7 +5,7 @@ from Bio.PDB.Chain import Chain as BioChain
 from Bio.PDB.Residue import Residue as BioResidue
 from Bio.PDB.Atom import Atom as BioAtom, DisorderedAtom
 
-from typing import List, Tuple, Dict, Annotated
+from typing import List, Tuple, Dict, Optional
 
 class ResidueFullID(BaseModel):
 
@@ -50,6 +50,7 @@ class AtomFullID(ResidueFullID):
 
 class Atom(BaseModel):
 
+    # Disorderd Atoms act the same as Atoms
     object: BioAtom | DisorderedAtom
 
     id: AtomFullID
@@ -67,13 +68,25 @@ class Residue(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
+    def ca(self) -> Atom:
+        """Gets central carbon atom"""
+
+        for a in self.atoms:
+
+            if a.object.id == 'CA':
+
+                return a
+        
+        # Sometimes do not have a CA, ex ABU
+        return self.atoms[0]
+
 class Protien(BaseModel):
 
     # points to Bio object
     object: BioChain
 
     # Does not have to be ordered
-    amino_acids: List[Residue]
+    residues: List[Residue]
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -81,6 +94,7 @@ class InteractionMember(BaseModel):
 
     protien: Protien
     residue: Residue
+    atom: Optional[Atom]
 
 class Interaction(BaseModel):
 
