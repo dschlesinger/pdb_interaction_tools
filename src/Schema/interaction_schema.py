@@ -23,9 +23,6 @@ class ResidueFullID(BaseModel):
     sequence_id: int
     intersection_id: str # if is from other chain, should not be a problem
 
-    # For list(chain.get_residues())[int]
-    list_position: int
-
     # As model is passed in as tuple
     @model_validator(mode='before')
     @classmethod
