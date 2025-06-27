@@ -1,5 +1,6 @@
 from pydantic import BaseModel, model_validator, Field, ConfigDict
 
+from Bio.PDB.Structure import Structure as BioStructure
 from Bio.PDB.Chain import Chain as BioChain
 from Bio.PDB.Residue import Residue as BioResidue
 from Bio.PDB.Atom import Atom as BioAtom
@@ -102,6 +103,8 @@ class AtomClosestDistance(CentralCarbonDistance):
 
 
 class Structure(BaseModel):
+
+    object: BioStructure
 
     participants: List[Protien]
     interactions: List[Interaction]
