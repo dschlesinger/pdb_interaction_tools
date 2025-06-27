@@ -3,11 +3,13 @@ from pydantic import BaseModel, model_validator, Field, ConfigDict
 from Bio.PDB.Structure import Structure as BioStructure
 from Bio.PDB.Chain import Chain as BioChain
 from Bio.PDB.Residue import Residue as BioResidue
-from Bio.PDB.Atom import Atom as BioAtom
+from Bio.PDB.Atom import Atom as BioAtom, DisorderedAtom
 
 from typing import List, Tuple, Dict, Annotated
 
 class ResidueFullID(BaseModel):
+
+    full_id: Tuple
 
     # Basiclly PDB code
     structure_id: str
@@ -48,7 +50,7 @@ class AtomFullID(ResidueFullID):
 
 class Atom(BaseModel):
 
-    object: BioAtom
+    object: BioAtom | DisorderedAtom
 
     id: AtomFullID
 
@@ -99,3 +101,5 @@ class Structure(BaseModel):
 
     participants: List[Protien]
     interactions: List[Interaction]
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
