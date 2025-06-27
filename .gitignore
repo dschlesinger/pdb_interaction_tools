@@ -1,0 +1,8 @@
+# Basics
+__pycache__
+.venv
+
+# Package things
+*.egg-info/
+Pipfile
+
