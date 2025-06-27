@@ -52,9 +52,6 @@ class Atom(BaseModel):
 
     object: BioAtom
 
-    # 1 letter code
-    code: str
-
     id: AtomFullID
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -63,9 +60,6 @@ class Residue(BaseModel):
 
     # points to bio object
     object: BioResidue
-
-    # 3 letter code
-    code: str
 
     id: ResidueFullID
 
