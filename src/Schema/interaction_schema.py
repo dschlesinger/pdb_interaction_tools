@@ -40,8 +40,6 @@ class ResidueFullID(BaseModel):
         kw['sequence_id'], \
         kw['intersection_id'] = rid
 
-        del kw['full_id']
-
         return kw
 
 class AtomFullID(ResidueFullID):
@@ -62,6 +60,8 @@ class Residue(BaseModel):
     object: BioResidue
 
     id: ResidueFullID
+
+    atoms: List[Atom]
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
