@@ -1,6 +1,0 @@
-# Regular
-.venv
-__pycache__
-
-# Testing
-*.test.*
