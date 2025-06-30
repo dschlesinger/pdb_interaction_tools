@@ -1,10 +1,49 @@
 import numpy as np
 
-from Schema.interaction_schema import Protien, Interaction, InteractionMember, CentralCarbonDistance, AtomClosestDistance
+from Schema.interaction_schema import Protien, Residue, Atom, Interaction, InteractionMember, CentralCarbonDistance, AtomClosestDistance
 
 from typing import List
 
 class CalculateInteraction:
+
+    @staticmethod
+    def by_closest_atoms(A: Protien, B: Protien, central_atom_cutoff: float = 10.0, atomic_cutoff: float = 6.0) -> List[AtomClosestDistance]:
+
+        filtered: List[CentralCarbonDistance] = \
+            CalculateInteraction.by_central_carbon(A, B, central_atom_cutoff)
+
+        atomic_interactions: List[AtomClosestDistance] = []
+
+        for interaction in filtered:
+
+            # Ignore if more than 2
+            r1, r2, *_ = interaction.members
+
+            r1_coords = np.array([atom.object.coord for atom in r1.residue.atoms])
+            r2_coords = np.array([atom.object.coord for atom in r2.residue.atoms])
+
+            # Rows are r1 residues, Columns are B residues
+            diff = r1_coords[:, np.newaxis, :] - r2_coords[np.newaxis, :, :]
+
+            # Uses euclidean distance
+            distance_matrix = np.sqrt(np.sum(diff ** 2, axis=2))
+
+            if distance_matrix.min() < atomic_cutoff:
+
+                r1_pos, r2_pos = np.unravel_index(distance_matrix.argmin(), distance_matrix.shape)
+
+                r1.atom = r1.residue.atoms[r1_pos]
+                r2.atom = r2.residue.atoms[r2_pos]
+                atomic_interactions.append(
+                    AtomClosestDistance(
+                        members=interaction.members,
+                        central_carbon_distance=interaction.central_carbon_distance,
+                        closest_atom_distance=distance_matrix.min().item(),
+                    )
+                )
+
+        return atomic_interactions
+
 
     @staticmethod
     def by_central_carbon(A: Protien, B: Protien, distance_cutoff: float = 6.0) -> List[CentralCarbonDistance]:
