@@ -68,4 +68,4 @@ def charge_based_heuristic(interactions: List[Interaction]) -> float:
 
             total += scoring(*c)
 
-        return total
+    return total
