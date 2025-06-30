@@ -8,7 +8,7 @@ from typing import List, Literal
 
 def charge_based_heuristic(interactions: List[Interaction]) -> float:
 
-    type prop = Literal[
+    prop = Literal[
         'negative',
         'positive',
         'polar',
