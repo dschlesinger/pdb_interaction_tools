@@ -1,5 +1,5 @@
 from Bio.PDB import PDBParser, MMCIFParser, Structure as BioStructure, PDBExceptions
-from Schema.interaction_schema import Atom, Residue, Protien, Structure, AtomFullID, ResidueFullID
+from Schema import Atom, Residue, Protien, Structure, AtomFullID, ResidueFullID
 
 from pydantic import FilePath
 from typing import Literal, Optional

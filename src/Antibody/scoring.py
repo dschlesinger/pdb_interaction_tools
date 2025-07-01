@@ -3,7 +3,7 @@ from itertools import product
 
 from utils.amino_acid import AminoAcids3 as AA3
 
-from Schema.interaction_schema import Interaction, InteractionMember
+from Schema import Interaction, InteractionMember
 from typing import List, Literal
 
 def charge_based_heuristic(interactions: List[Interaction]) -> float:

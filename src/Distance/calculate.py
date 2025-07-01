@@ -1,6 +1,6 @@
 import numpy as np
 
-from Schema.interaction_schema import Protien, Residue, Atom, Interaction, InteractionMember, CentralCarbonDistance, AtomClosestDistance
+from Schema import Protien, Interaction, InteractionMember, CentralCarbonDistance, AtomClosestDistance
 
 from typing import List
 

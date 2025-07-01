@@ -1,4 +1,4 @@
-from Schema.interaction_schema import ResidueFullID, AtomFullID
+from Schema import ResidueFullID, AtomFullID
 
 def test_residue_full_id() -> None:
 
