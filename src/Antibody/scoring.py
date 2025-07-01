@@ -8,36 +8,10 @@ from typing import List, Literal
 
 def charge_based_heuristic(interactions: List[Interaction]) -> float:
 
-    prop = Literal[
-        'negative',
-        'positive',
-        'polar',
-        'hydrophobic',
-        'sulfur-bridge',
-        'aromatic',
-    ]
+    def scoring(property_a: AA3.charge_property, property_b: AA3.charge_property) -> float:
 
-    order: List[prop] = ['negative', 'positive', 'polar', \
-                        'hydrophobic', 'sulfur-bridge', 'aromatic',]
-
-    def typer(m: InteractionMember) -> List[prop]:
-
-        groups = [AA3.CHARGED_NEGATIVE, AA3.CHARGED_POSITIVE, AA3.POLAR, AA3.HYDROPHOBIC, AA3.SULFUR_BRIDGE, AA3.AROMATIC]
-
-        is_in: List[prop] = []
-
-        for group, tag in zip(groups, order):
-
-            if m.residue.object.resname in group:
-
-                is_in.append(tag)
-
-        return is_in
-
-    def scoring(property_a: prop, property_b: prop) -> float:
-
-        loc_a: int = order.index(property_a)
-        loc_b: int = order.index(property_b)
+        loc_a: int = AA3.order.index(property_a)
+        loc_b: int = AA3.order.index(property_b)
 
         # Upper right triangle
         score_matrix: np.ndarray = np.array(
@@ -60,7 +34,7 @@ def charge_based_heuristic(interactions: List[Interaction]) -> float:
 
         r1, r2, *_ = interaction.members
 
-        r1_types, r2_types = typer(r1), typer(r2)
+        r1_types, r2_types = AA3.typer(r1), AA3.typer(r2)
 
         combs = product(r1_types, r2_types)
 

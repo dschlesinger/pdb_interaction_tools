@@ -1,3 +1,7 @@
+from Schema import InteractionMember
+
+from typing import List, Literal
+
 class AminoAcids3:
     """Class stores 3 letter amino acid residue names and groups"""
 
@@ -40,3 +44,24 @@ class AminoAcids3:
         'PHE', 'TYR', 'TRP', 'HIS'
     ]
     # ChatGPT Generated check with wikipedia
+
+    charge_property = Literal['negative', 'positive', 'polar', \
+                        'hydrophobic', 'sulfur-bridge', 'aromatic',]
+
+    order: List[charge_property] = ['negative', 'positive', 'polar', \
+                                'hydrophobic', 'sulfur-bridge', 'aromatic',]
+
+    @classmethod
+    def typer(cls, m: InteractionMember) -> List['charge_property']:
+
+        groups = [cls.CHARGED_NEGATIVE, cls.CHARGED_POSITIVE, cls.POLAR, cls.HYDROPHOBIC, cls.SULFUR_BRIDGE, cls.AROMATIC]
+
+        is_in: List['charge_property'] = []
+
+        for group, tag in zip(groups, cls.order):
+
+            if m.residue.object.resname in group:
+
+                is_in.append(tag)
+
+        return is_in
