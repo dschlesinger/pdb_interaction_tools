@@ -34,7 +34,7 @@ def charge_based_heuristic(interactions: List[Interaction]) -> float:
 
         r1, r2, *_ = interaction.members
 
-        r1_types, r2_types = AA3.typer(r1), AA3.typer(r2)
+        r1_types, r2_types = AA3.charge_typer(r1), AA3.charge_typer(r2)
 
         combs = product(r1_types, r2_types)
 

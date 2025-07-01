@@ -52,7 +52,7 @@ class AminoAcids3:
                                 'hydrophobic', 'sulfur-bridge', 'aromatic',]
 
     @classmethod
-    def typer(cls, m: InteractionMember) -> List['charge_property']:
+    def charge_typer(cls, m: InteractionMember) -> List['charge_property']:
 
         groups = [cls.CHARGED_NEGATIVE, cls.CHARGED_POSITIVE, cls.POLAR, cls.HYDROPHOBIC, cls.SULFUR_BRIDGE, cls.AROMATIC]
 
