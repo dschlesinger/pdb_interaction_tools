@@ -12,7 +12,7 @@ def show_antibody_antigen(
     highlight: List[Interaction] = [],
     highlight_by: Literal['charge'] = 'charge',
     default_color: str = 'black',
-) -> None:
+) -> py3Dmol.view:
     
     with open(s.file, 'r') as f:
 
@@ -38,4 +38,4 @@ def show_antibody_antigen(
 
                 view.setStyle({'chain': p.object.chain, 'resn': r.object.get_id()[1]}, {'color': color})
 
-    return
+    return view
