@@ -6,7 +6,7 @@ from typing import List
 
 class CalculateInteraction:
 
-    def atomic_interactions_by_member(r: Residue, interactions: List[Interaction]) -> List[Interaction]:
+    def interactions_by_member(r: Residue, interactions: List[Interaction]) -> List[Interaction]:
 
         found = []
 
