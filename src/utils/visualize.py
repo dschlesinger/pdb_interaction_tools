@@ -21,6 +21,8 @@ def show_antibody_antigen(
     view = py3Dmol.view(width=800, height=800)
 
     view.addModel(protien_stuff, s.file_type)
+
+    view.setStyle({'cartoon': {'color': default_color}})
     
     residues_to_color: Set[Residue] = set(
         sum(
