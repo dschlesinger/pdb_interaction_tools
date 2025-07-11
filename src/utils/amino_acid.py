@@ -54,11 +54,11 @@ class AminoAcids3:
     ]
     # ChatGPT Generated check with wikipedia
 
-    charge_property = Literal['polar', 'hydrophobic', 'sulfur-bridge', \
-                              'negative', 'positive', 'aromatic',]
+    charge_property = Literal['hydrophobic', 'polar', 'negative', \
+                              'positive', 'sulfur-bridge', 'aromatic',]
 
-    order: List[charge_property] = ['polar', 'hydrophobic', 'sulfur-bridge', \
-                              'negative', 'positive', 'aromatic',]
+    order: List[charge_property] = ['hydrophobic', 'polar', 'negative', \
+                                    'positive', 'sulfur-bridge', 'aromatic',]
 
     @classmethod
     def color_by_charge(cls, m: InteractionMember, default_color: str = 'black') -> str:
@@ -78,7 +78,7 @@ class AminoAcids3:
     @classmethod
     def charge_typer(cls, m: InteractionMember) -> List['charge_property']:
 
-        groups = [cls.POLAR, cls.HYDROPHOBIC, cls.CHARGED_NEGATIVE, cls.CHARGED_POSITIVE, cls.SULFUR_BRIDGE, cls.AROMATIC]
+        groups = [cls.HYDROPHOBIC, cls.POLAR, cls.CHARGED_NEGATIVE, cls.CHARGED_POSITIVE, cls.SULFUR_BRIDGE, cls.AROMATIC]
 
         is_in: List['charge_property'] = []
 
