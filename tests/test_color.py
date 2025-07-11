@@ -16,4 +16,6 @@ def test_run() -> None:
 
     print(AA3.color_by_charge(a), a.residue)
 
+    show_antibody_antigen(s, highlight=i)
+
     
