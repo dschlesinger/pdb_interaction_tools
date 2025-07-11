@@ -1,10 +1,24 @@
 import numpy as np
 
-from Schema import Protien, Interaction, InteractionMember, CentralCarbonDistance, AtomClosestDistance
+from Schema import Residue, Protien, Interaction, InteractionMember, CentralCarbonDistance, AtomClosestDistance
 
 from typing import List
 
 class CalculateInteraction:
+
+    def atomic_interactions_by_member(r: Residue, interactions: List[Interaction]) -> List[Interaction]:
+
+        found = []
+
+        for i in interactions:
+
+            a, b, *_ = i.members
+
+            if r in [a.residue, b.residue]:
+
+                found.append(i)
+
+        return found
 
     @staticmethod
     def by_closest_atoms(A: Protien, B: Protien, central_atom_cutoff: float = 10.0, atomic_cutoff: float = 6.0) -> List[AtomClosestDistance]:
