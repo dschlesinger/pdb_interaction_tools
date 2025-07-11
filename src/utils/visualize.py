@@ -1,10 +1,10 @@
 import py3Dmol
 
-from Schema import Interaction, Structure, Residue
+from Schema import Interaction, Structure, InteractionMember
 
 from .amino_acid import AminoAcids3 as AA3
 
-from typing import List, Literal, Set, Dict
+from typing import List, Literal, List
 
 def show_antibody_antigen(
     s: Structure,
@@ -24,20 +24,15 @@ def show_antibody_antigen(
 
     view.setStyle({'cartoon': {'color': default_color}})
     
-    residues_to_color: Set[Residue] = set(
-        sum(
-            [[im.residue for im in interaction.members] for interaction in highlight]
+    residues_to_color: List[InteractionMember] = sum(
+            [[im for im in interaction.members] for interaction in highlight]
             , []
         )
-    ) 
     
-    for p in s:
-        for r in p:
+    for r in residues_to_color:
 
-            if r in residues_to_color:
+        color = AA3.color_by_charge(r, default_color=default_color)
 
-                color = AA3.color_by_charge(r, default_color=default_color)
-
-                view.setStyle({'chain': p.object.chain, 'resn': r.object.get_id()[1]}, {'stick': {'color': color}})
+        view.setStyle({'chain': r.protien.object.chain, 'resn': r.residue.object.get_id()[1]}, {'stick': {'color': color}})
 
     return view
