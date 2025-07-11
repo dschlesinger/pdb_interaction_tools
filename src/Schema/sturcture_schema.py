@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, model_validator, FilePath
 
 from Bio.PDB.Structure import Structure as BioStructure
 from Bio.PDB.Chain import Chain as BioChain
@@ -7,7 +7,7 @@ from Bio.PDB.Atom import Atom as BioAtom, DisorderedAtom
 
 # from Schema import Interaction, Causes circular import
 
-from typing import Tuple, Dict, List, Any
+from typing import Tuple, Dict, List, Any, Literal
 
 class ResidueFullID(BaseModel):
 
@@ -95,6 +95,8 @@ class Protien(BaseModel):
 class Structure(BaseModel):
 
     object: BioStructure
+    file: FilePath
+    file_type: Literal['pdb', 'cif']
 
     participants: List[Protien]
     interactions: List[Any] # List of Interaction

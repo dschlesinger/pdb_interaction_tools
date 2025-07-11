@@ -1,7 +1,41 @@
 import py3Dmol
 
-from Schema.interaction_schema import Interaction
+from Schema import Interaction, Structure, Residue
 
-def show_protien(
+from .amino_acid import AminoAcids3 as AA3
 
+from typing import List, Literal, Set, Dict
+
+def show_antibody_antigen(
+    s: Structure,
+    *,
+    highlight: List[Interaction] = [],
+    highlight_by: Literal['charge'] = 'charge',
+    default_color: str = 'black',
 ) -> None:
+    
+    with open(s.file, 'r') as f:
+
+        protien_stuff = f.read()
+
+    view = py3Dmol.view(width=800, height=800)
+
+    view.addModel(protien_stuff, s.file_type)
+    
+    residues_to_color: Set[Residue] = set(
+        sum(
+            [[im.residue for im in interaction.members] for interaction in highlight]
+            , []
+        )
+    ) 
+    
+    for p in s:
+        for r in p:
+
+            if r in residues_to_color:
+
+                color = AA3.color_by_charge(r, default_color=default_color)
+
+                view.setStyle({'chain': p.object.chain, 'resn': r.object.get_id()[1]}, {'color': color})
+
+    return

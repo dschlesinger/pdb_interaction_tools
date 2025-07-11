@@ -59,6 +59,8 @@ def load_structure(file_path: FilePath, file_type: Optional[Literal['pdb', 'cif'
         participants=[],
         interactions=[],
         object=bio_struct,
+        file=file_path,
+        file_type=file_type,
     )
 
     # Iterate over subparts
