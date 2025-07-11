@@ -12,6 +12,7 @@ def show_antibody_antigen(
     highlight: List[Interaction] = [],
     highlight_by: Literal['charge'] = 'charge',
     default_color: str = 'black',
+    model_as: str = 'stick',
 ) -> py3Dmol.view:
     
     with open(s.file, 'r') as f:
@@ -33,6 +34,6 @@ def show_antibody_antigen(
 
         color = AA3.color_by_charge(r, default_color=default_color)
 
-        view.setStyle({'chain': r.protien.object.id, 'resi': r.residue.object.get_id()[1]}, {'stick': {'color': color}})
+        view.setStyle({'chain': r.protien.object.id, 'resi': r.residue.object.get_id()[1]}, {model_as: {'color': color}})
 
     return view
