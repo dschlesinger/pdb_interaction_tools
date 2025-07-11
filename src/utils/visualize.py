@@ -6,6 +6,12 @@ from .amino_acid import AminoAcids3 as AA3
 
 from typing import List, Literal, List
 
+def highlight_residue(view: py3Dmol.view, *, chain: str, resi: int, color: str = 'yellow', style: str = 'cartoon') -> py3Dmol.view:
+
+    view.setStyle({'chain': chain, 'resi': resi}, {style: {'color': color}})
+
+    return view
+
 def show_antibody_antigen(
     s: Structure,
     *,
