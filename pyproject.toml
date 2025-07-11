@@ -1,6 +1,6 @@
 [project]
 name = "pdb-interaction-tools"
-version = "1.2.0"
+version = "1.2.1"
 description = "Random tasks I need to do"
 authors = [
     {name = "Denali Schlesinger", email = "dsch28@bu.edu"}
