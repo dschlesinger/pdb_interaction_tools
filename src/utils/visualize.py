@@ -38,6 +38,6 @@ def show_antibody_antigen(
 
                 color = AA3.color_by_charge(r, default_color=default_color)
 
-                view.setStyle({'chain': p.object.chain, 'resn': r.object.get_id()[1]}, {'color': color})
+                view.setStyle({'chain': p.object.chain, 'resn': r.object.get_id()[1]}, {'stick': {'color': color}})
 
     return view
