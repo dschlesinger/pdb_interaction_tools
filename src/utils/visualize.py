@@ -33,6 +33,6 @@ def show_antibody_antigen(
 
         color = AA3.color_by_charge(r, default_color=default_color)
 
-        view.setStyle({'chain': r.protien.object.chain, 'resn': r.residue.object.get_id()[1]}, {'stick': {'color': color}})
+        view.setStyle({'chain': r.protien.object.id, 'resn': r.residue.object.get_id()[1]}, {'stick': {'color': color}})
 
     return view
