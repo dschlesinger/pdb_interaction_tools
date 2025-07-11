@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 from typing import List, Optional
 
-from Schema.sturcture_schema import Protien, Residue, Atom
+from Schema.structure_schema import Protien, Residue, Atom
 
 class InteractionMember(BaseModel):
 

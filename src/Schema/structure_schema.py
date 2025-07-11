@@ -1,13 +1,14 @@
-from pydantic import BaseModel, ConfigDict, model_validator, FilePath
+from pydantic import BaseModel, ConfigDict, model_validator, FilePath, computed_field
 
 from Bio.PDB.Structure import Structure as BioStructure
 from Bio.PDB.Chain import Chain as BioChain
 from Bio.PDB.Residue import Residue as BioResidue
 from Bio.PDB.Atom import Atom as BioAtom, DisorderedAtom
+from Bio.SeqUtils import seq1
 
 # from Schema import Interaction, Causes circular import
 
-from typing import Tuple, Dict, List, Any, Literal
+from typing import Tuple, Dict, List, Any, Literal, Optional
 
 class ResidueFullID(BaseModel):
 
@@ -82,6 +83,19 @@ class Residue(BaseModel):
         # Sometimes do not have a CA, ex ABU
         return self.atoms[0]
 
+    @computed_field
+    @property
+    def single_letter_resname(self) -> str:
+
+        return seq1(self.object.resname)
+
+class Mutation(BaseModel):
+
+    chain: str
+    resi: int
+
+    to: str
+
 class Protien(BaseModel):
 
     # points to Bio object
@@ -91,6 +105,15 @@ class Protien(BaseModel):
     residues: List[Residue]
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def seq(self, mutations: Optional[List[Mutation]] = []) -> str:
+
+        sc: str = self.object.id
+
+        # Construct position dict
+        md = {m.resi: m.to for m in mutations if m.chain == sc}
+
+        return ''.join([md.get(i + 1, r.single_letter_resname) for i, r in enumerate(self.residues)])
 
 class Structure(BaseModel):
 
