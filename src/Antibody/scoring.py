@@ -27,9 +27,7 @@ def charge_based_heuristic(interactions: List[Interaction]) -> float:
         ],
             dtype=np.float32,
         )
-
-        match 
-
+        
         return score_matrix[min(loc_a, loc_b), max(loc_a, loc_b)]
     
     total: float = 0
