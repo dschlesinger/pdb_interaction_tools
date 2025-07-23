@@ -26,5 +26,3 @@ def test_sequence() -> None:
         to='A',
     )
 
-    print(a.seq()[:5], a.seq([m])[:5])
-
