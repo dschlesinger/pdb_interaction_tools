@@ -3,10 +3,10 @@ from itertools import product
 
 from utils.amino_acid import AminoAcids3 as AA3
 
-from Schema import Interaction, InteractionMember
+from Schema import Interaction, AtomClosestDistance, InteractionMember
 from typing import List, Literal
 
-def charge_based_heuristic(interactions: List[Interaction]) -> float:
+def charge_based_heuristic(interactions: List[AtomClosestDistance], cutoff: float = 6) -> float:
 
     def scoring(property_a: AA3.charge_property, property_b: AA3.charge_property) -> float:
 
@@ -27,7 +27,7 @@ def charge_based_heuristic(interactions: List[Interaction]) -> float:
         ],
             dtype=np.float32,
         )
-        
+
         return score_matrix[min(loc_a, loc_b), max(loc_a, loc_b)]
     
     total: float = 0
@@ -40,11 +40,11 @@ def charge_based_heuristic(interactions: List[Interaction]) -> float:
 
         combs = product(r1_types, r2_types)
 
-        print(f'{r1.residue.object.resname} -> {r1_types}')
-        print(f'{r2.residue.object.resname} -> {r2_types}')
-
         for c in combs:
 
-            total += scoring(*c)
+            # Score * distance
+            s = scoring(*c) * (1 - ((interaction.closest_atom_distance / cutoff) ** 2))
+
+            total += s
 
     return total
