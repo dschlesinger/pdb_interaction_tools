@@ -1,6 +1,6 @@
 [project]
 name = "pdb-interaction-tools"
-version = "1.6.1"
+version = "1.6.2"
 description = "Random tasks I need to do"
 authors = [
     {name = "Denali Schlesinger", email = "dsch28@bu.edu"}
@@ -8,7 +8,7 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "numpy (>=2.3.1,<3.0.0)",
+    "numpy (>=2.2,<3.0.0)",
     "biopython (>=1.85,<2.0)",
     "py3dmol (>=2.5.1,<3.0.0)",
     "pydantic (>=2.11.7,<3.0.0)"
