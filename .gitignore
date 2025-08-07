@@ -1,6 +1,10 @@
-# Regular
-.venv
+# Basics
 __pycache__
+.venv
 
-# Testing
-*.test.*
+# Package things
+*.egg-info/
+Pipfile
+
+# Pytest things
+.pytest_cache
