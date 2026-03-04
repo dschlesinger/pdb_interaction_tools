@@ -8,3 +8,8 @@ Pipfile
 
 # Pytest things
 .pytest_cache
+
+# cif files from calcium tests
+*ca*.cif
+reelin56_apoer.cif
+af3_rmsd_results.csv
